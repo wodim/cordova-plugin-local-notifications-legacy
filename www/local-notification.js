@@ -148,6 +148,22 @@ LocalNotification.prototype = {
     /**
      * @async
      *
+     * Clears notification from notification area.
+     * Does not cancel future notifications.
+     *
+     * @param {String} id
+     *
+     */
+
+    clear: function(id, callback){
+        if (['Android'].indexOf(device.platform)) {
+            cordova.exec(callback, null, 'LocalNotification', 'clear', [id.toString()]);
+        }
+    },
+
+    /**
+     * @async
+     *
      * Retrieves a list with all currently pending notifications.
      *
      * @param {Function} callback
