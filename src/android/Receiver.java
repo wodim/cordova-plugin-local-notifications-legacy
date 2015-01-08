@@ -83,9 +83,25 @@ public class Receiver extends BroadcastReceiver {
             LocalNotification.add(options.moveDate(), false);
         }
 
-        Builder notification = buildNotification();
+        if (options.getOngoing() == true) {
+            Builder notification = buildNotification();
 
-        showNotification(notification);
+            showNotification(notification);
+        } else {
+            Intent intent2 = new Intent(context, ReceiverActivity.class)
+            .putExtra(OPTIONS, options.getJSONObject().toString())
+            .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            int requestCode = new Random().nextInt();
+
+            PendingIntent contentIntent = PendingIntent.getActivity(context, requestCode, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
+            try {
+                contentIntent.send(context, 0, intent);
+            } catch (CanceledException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     /*
